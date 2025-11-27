@@ -1,0 +1,28 @@
+name: Deploy to Somee Hosting
+
+on:
+  push:
+    branches:
+      - main  # Chạy khi có thay đổi trên nhánh main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Chạy trên môi trường Ubuntu
+
+    steps:
+    # Checkout mã nguồn từ GitHub
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Cài đặt lftp để sử dụng FTP
+    - name: Install lftp
+      run: sudo apt-get install lftp
+
+    # Deploy lên Somee Hosting qua FTP
+    - name: Deploy to Somee Hosting via FTP
+      run: |
+        lftp -f "
+        open ftp://Kiendeptrai0909:Kiendeptrai0909;@letrungkien.somee.com
+        mirror -R ./path/to/your/website /www.letrungkien.somee.com
+        bye
+        "
